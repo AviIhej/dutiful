@@ -4,36 +4,41 @@ const dotenv = require('dotenv')
 dotenv.config()
 
 const { DB_URI, DB_NAME }  = process.env;
-
-const books = [
-    {
-        title: "William Adventure",
-        author: "William Henry"
-    },
-    {
-        title: "Sharespeare's Adventure",
-        author: "William Shakespeare"
-    }
-]
-
+ 
 const typeDefs = gql`
-    type Book {
-        title: String,
-        author: String
+    type User {
+        id: ID!
+        name: String!
+        email: String!
+        avater: String
+    }
+
+    type TaskList {
+        id: ID!
+        createdAt: String!
+        title: String!
+        progress: Float!
+
+        users: [User!]!
+        # todos: [Todo!]!
+
+    }
+
+    type ToDo{
+        id: ID!
+        content: String!
+        isCompleted: Boolean!
+
+        taskList: TaskList!
     }
 
     type Query {
-        books: [Book]
+        user: [User]
     }
 `
 
 const resolvers = {
-    Query: {
-        books: (root, data, context) => {
-            console.log(context.db)
-            return books
-        }
-    }
+  
 }
 
 async function start() {
@@ -59,4 +64,4 @@ async function start() {
     }
 }
 
-start()
+start() 
